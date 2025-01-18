@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
-// Configuration de la base de données
+// Configuration de la base de donnÃ©es
 const { Pool } = require('pg');
 const pool = new Pool({
   user: process.env.PGUSER,
@@ -11,18 +11,26 @@ const pool = new Pool({
   port: process.env.PGPORT,
 });
 
-// Créer une application Express
+// Afficher les informations de connexion Ã  la base de donnÃ©es
+console.log('Database Credentials:');
+console.log('User:', process.env.PGUSER);
+console.log('Host:', process.env.PGHOST);
+console.log('Database:', process.env.PGDATABASE);
+console.log('Password:', process.env.PGPASSWORD ? '*****' : 'Not set'); // Masquer le mot de passe pour des raisons de sÃ©curitÃ©
+console.log('Port:', process.env.PGPORT);
+
+// CrÃ©er une application Express
 const app = express();
 app.use(bodyParser.json());
 
-// Fonction pour tester la connexion à la base de données
+// Fonction pour tester la connexion Ã  la base de donnÃ©es
 async function testDbConnection() {
   try {
-    const client = await pool.connect(); // Tente de se connecter à la base de données
-    console.log('Connexion à la base de données réussie !');
-    client.release(); // Libère le client
+    const client = await pool.connect(); // Tente de se connecter Ã  la base de donnÃ©es
+    console.log('Connexion Ã  la base de donnÃ©es rÃ©ussie !');
+    client.release(); // LibÃ¨re le client
   } catch (err) {
-    console.error('Erreur de connexion à la base de données :', err);
+    console.error('Erreur de connexion Ã  la base de donnÃ©es :', err);
     process.exit(1); // Quitte l'application en cas d'erreur
   }
 }
@@ -34,7 +42,7 @@ app.post('/webhook', async (req, res) => {
   try {
     let responseText = '';
 
-    // Gérer les différentes intentions
+    // GÃ©rer les diffÃ©rentes intentions
     switch (intentName) {
       case 'RechercheParType':
         const typePropriete = req.body.queryResult.parameters['type-propriete'];
@@ -43,8 +51,8 @@ app.post('/webhook', async (req, res) => {
           [typePropriete]
         );
         responseText = resultType.rows.length > 0
-          ? `Voici les propriétés de type ${typePropriete}: ${JSON.stringify(resultType.rows)}`
-          : `Aucune propriété trouvée pour le type ${typePropriete}.`;
+          ? `Voici les propriÃ©tÃ©s de type ${typePropriete}: ${JSON.stringify(resultType.rows)}`
+          : `Aucune propriÃ©tÃ© trouvÃ©e pour le type ${typePropriete}.`;
         break;
 
       case 'RechercheParVille':
@@ -54,40 +62,40 @@ app.post('/webhook', async (req, res) => {
           [ville]
         );
         responseText = resultVille.rows.length > 0
-          ? `Voici les propriétés à ${ville}: ${JSON.stringify(resultVille.rows)}`
-          : `Aucune propriété trouvée à ${ville}.`;
+          ? `Voici les propriÃ©tÃ©s Ã  ${ville}: ${JSON.stringify(resultVille.rows)}`
+          : `Aucune propriÃ©tÃ© trouvÃ©e Ã  ${ville}.`;
         break;
 
       // Ajoutez d'autres intentions ici...
 
       default:
-        responseText = 'Je ne comprends pas cette requête.';
+        responseText = 'Je ne comprends pas cette requÃªte.';
         break;
     }
 
-    // Envoyer la réponse à Dialogflow
+    // Envoyer la rÃ©ponse Ã  Dialogflow
     res.json({
       fulfillmentText: responseText,
     });
   } catch (err) {
-    console.error('Erreur lors de la requête à la base de données :', err);
+    console.error('Erreur lors de la requÃªte Ã  la base de donnÃ©es :', err);
     res.status(500).json({ error: 'Une erreur est survenue.' });
   }
 });
 
-// Démarrer le serveur
+// DÃ©marrer le serveur
 const PORT = process.env.PORT || 3000;
 
-// Vérifier la connexion à la base de données uniquement en production (sur Render)
+// VÃ©rifier la connexion Ã  la base de donnÃ©es uniquement en production (sur Render)
 if (process.env.NODE_ENV === 'production') {
   testDbConnection().then(() => {
     app.listen(PORT, () => {
-      console.log(`Serveur webhook en écoute sur le port ${PORT}`);
+      console.log(`Serveur webhook en Ã©coute sur le port ${PORT}`);
     });
   });
 } else {
-  // En local, démarrer le serveur sans vérifier la connexion à la base de données
+  // En local, dÃ©marrer le serveur sans vÃ©rifier la connexion Ã  la base de donnÃ©es
   app.listen(PORT, () => {
-    console.log(`Serveur webhook en écoute sur le port ${PORT}`);
+    console.log(`Serveur webhook en Ã©coute sur le port ${PORT}`);
   });
 }
