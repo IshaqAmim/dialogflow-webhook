@@ -25,8 +25,8 @@ app.post('/webhook', async (req, res) => {
         break;
 
       case 'RechercheParEquipement':
-        const ville = req.body.queryResult.parameters['equipement'];
-        responseText = `SQL Query: SELECT * FROM proprietes WHERE _id = (SELECT id FROM equipements WHERE nom = '${ville}')`;
+        const equipement = req.body.queryResult.parameters['equipement'];
+        responseText = `SQL Query: SELECT * FROM proprietes WHERE equipement_id = (SELECT id FROM equipements WHERE nom = '${equipement}')`;
         break;
 
       // Ajoutez d'autres intentions ici...
