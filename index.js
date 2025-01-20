@@ -35,7 +35,11 @@ app.post('/webhook', async (req, res) => {
             if (rows.length > 0) {
               responseText = `Voici les propriétés de type "${typePropriete}":\n`;
               rows.forEach((row) => {
-                responseText += `- ${row.caracteristiques} (${row.budget} €)\n`;
+                responseText += `- ${row.caracteristiques}\n`;
+                responseText += `  Budget: ${row.budget} €\n`;
+                responseText += `  Surface: ${row.surface} m²\n`;
+                responseText += `  Pièces: ${row.pieces}\n`;
+                responseText += `  Type de marché: ${row.type_marche}\n\n`;
               });
             } else {
               responseText = `Aucune propriété trouvée pour le type "${typePropriete}".`;
@@ -56,7 +60,11 @@ app.post('/webhook', async (req, res) => {
             if (rows.length > 0) {
               responseText = `Voici les propriétés disponibles à "${ville}":\n`;
               rows.forEach((row) => {
-                responseText += `- ${row.caracteristiques} (${row.budget} €)\n`;
+                responseText += `- ${row.caracteristiques}\n`;
+                responseText += `  Budget: ${row.budget} €\n`;
+                responseText += `  Surface: ${row.surface} m²\n`;
+                responseText += `  Pièces: ${row.pieces}\n`;
+                responseText += `  Type de marché: ${row.type_marche}\n\n`;
               });
             } else {
               responseText = `Aucune propriété trouvée à "${ville}".`;
@@ -77,7 +85,11 @@ app.post('/webhook', async (req, res) => {
             if (rows.length > 0) {
               responseText = `Voici les propriétés avec l'équipement "${equipement}":\n`;
               rows.forEach((row) => {
-                responseText += `- ${row.caracteristiques} (${row.budget} €)\n`;
+                responseText += `- ${row.caracteristiques}\n`;
+                responseText += `  Budget: ${row.budget} €\n`;
+                responseText += `  Surface: ${row.surface} m²\n`;
+                responseText += `  Pièces: ${row.pieces}\n`;
+                responseText += `  Type de marché: ${row.type_marche}\n\n`;
               });
             } else {
               responseText = `Aucune propriété trouvée avec l'équipement "${equipement}".`;
