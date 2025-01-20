@@ -35,7 +35,7 @@ app.post('/webhook', async (req, res) => {
             if (rows.length > 0) {
               responseText = `Voici les propriétés de type "${typePropriete}":\n`;
               rows.forEach((row) => {
-                responseText += `- ${row.caracteristiques}\n`;
+                responseText += `- Caractéristiques:  ${row.caracteristiques}\n`;
                 responseText += `  Budget: ${row.budget} €\n`;
                 responseText += `  Surface: ${row.surface} m²\n`;
                 responseText += `  Pièces: ${row.pieces}\n`;
